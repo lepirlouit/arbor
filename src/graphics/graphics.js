@@ -23,6 +23,7 @@ var Graphics = function(canvas){
   var _fontLibrary = {}
   var _fontStyle = {font:"sans-serif",
                    size:12, 
+                   weight:"normal",
                    align:"left",
                    color:Colors.decode("black"),
                    alpha:1,
@@ -222,6 +223,7 @@ var Graphics = function(canvas){
             
       if (style.font!==undefined) _fontStyle.font = style.font
       if (style.size!==undefined) _fontStyle.size = style.size
+      if (style.weight!==undefined) _fontStyle.weight = style.weight
       ctx.font = nano("{size}px {font}", _fontStyle)
 
       if (style.align!==undefined){
@@ -258,8 +260,8 @@ var Graphics = function(canvas){
       ctx.save()
         if (style.align!==undefined) ctx.textAlign = style.align
         if (style.baseline!==undefined) ctx.textBaseline = style.baseline
-        if (style.font!==undefined && !isNaN(style.size)){
-          ctx.font = nano("{size}px {font}", style)
+        if (style.font!==undefined && !isNaN(style.size) && style.weight!==undefined){
+          ctx.font = nano("{weight} {size}px {font}", style)
         }
 
         var alpha = (style.alpha!==undefined) ? style.alpha : _fontStyle.alpha
@@ -274,7 +276,7 @@ var Graphics = function(canvas){
     textWidth:function(textStr, style){ // style: x,y, color, font, align, baseline, width
       style = objmerge(_fontStyle, style||{})
       ctx.save()
-        ctx.font = nano("{size}px {font}", style)
+        ctx.font = nano("{weight} {size}px {font}", style)
         var width = ctx.measureText(textStr).width			  
       ctx.restore()
       return width
